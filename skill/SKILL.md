@@ -31,18 +31,16 @@ Don't use for:
 
 ## Categorization
 
-PITFALL sections exceeding **5 items must be categorized**. Use these categories as needed — not all are required:
+PITFALL sections exceeding **5 items must be categorized**. The specific category names depend on your domain, but use this priority structure:
 
-| Category | What Goes Here | Priority |
-|----------|---------------|----------|
-| 🚨 **Anomaly Diagnosis** | Symptom → diagnosis → fix decision tables | Highest — always first |
-| **Selector / DOM Traps** | CSS selectors, DOM quirks, framework gotchas | High |
-| **Anti-Scraping / Rate Limits** | Rate limit codes, pacing, ban handling | High |
-| **Data & Parameters** | Parameter mapping, data formats, edge cases | Medium |
-| **Output & Rendering** | Platform rendering issues, format constraints | Medium |
-| **Project Conventions** | Directory structure, naming, process discipline | Low |
+| Priority | What Goes Here | Example Categories |
+|----------|---------------|-------------------|
+| **Highest** | Symptom → diagnosis → fix decision tables | Anomaly Diagnosis, Error Recovery |
+| High | Tool-specific gotchas, API quirks | Tool Traps, Integration Gotchas |
+| Medium | Data formats, parameter edge cases | Data & Parameters, Input Validation |
+| Low | Project conventions, naming rules | Project Conventions, Style Rules |
 
-Place the highest-priority category first. Agents read top-to-bottom.
+Not all categories are required. The key principle: **anomaly diagnosis always goes first**, because that's what agents need when something breaks.
 
 ## Decision Tables
 
@@ -98,7 +96,9 @@ Before adding any item to a PITFALL section, run through this list:
 
 ## Deduplication with Body Text
 
-The most common refactoring mistake: copying warnings from the skill body into PITFALL, becoming an echo chamber.
+This rule applies to **operation-manual-style skills** — ones with detailed step-by-step instructions and inline warnings (⚠️). For reference-style or API-doc-style skills where the body doesn't include inline warnings, all error knowledge goes in the pitfall section.
+
+**When applicable**, the most common refactoring mistake is: copying warnings from the skill body into PITFALL, becoming an echo chamber.
 
 **Rules**:
 - If the body already covers a gotcha right next to the relevant operation step (typically marked with ⚠️), the PITFALL section should give **one line of cross-reference** only — not repeat the full explanation
@@ -117,7 +117,7 @@ When PITFALL exceeds **20 items**:
 
 1. **Writing prose instead of decision tables.** Agents can't efficiently match "sometimes things break because..." against a concrete error. Use the Symptom/Diagnosis/Fix table.
 
-2. **Copying body text into PITFALL.** If the body already says "⚠️ sleep 5 seconds between requests", the PITFALL doesn't need to say it again. Cross-reference or skip.
+2. **Copying body text into PITFALL (for operation-manual skills).** If the body already says "⚠️ sleep 5 seconds between requests", the PITFALL doesn't need to say it again. Cross-reference or skip. Note: this only applies when the skill body has inline warnings.
 
 3. **Appending without categorizing.** The 6th uncategorized item is a violation. Categorize first.
 
