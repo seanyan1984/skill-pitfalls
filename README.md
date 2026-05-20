@@ -53,6 +53,8 @@ This is a **gap** in the current AI agent ecosystem:
 
 See [`references/community-landscape.md`](references/community-landscape.md) for detailed analysis.
 
+中文说明：[`references/README_CN.md`](references/README_CN.md)
+
 ## Usage
 
 ### For Hermes Agent

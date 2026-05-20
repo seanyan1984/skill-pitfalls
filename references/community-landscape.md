@@ -1,36 +1,48 @@
-# 社区调研：PITFALL 治理的社区现状（2026-05-20）
+# Community Landscape: PITFALL Management in AI Agent Skills
 
-## Hermes 官方
+## Hermes Agent (Official)
 
-官方 creating-skills 文档规定的 SKILL.md 标准格式里有 `## Pitfalls` 章节，说明只有一句话：
+The official [creating-skills docs](https://hermes-agent.nousresearch.com/docs/developer-guide/creating-skills) define a `## Pitfalls` section in the standard SKILL.md format with a single line:
+
 > "Known failure modes and how to handle them."
 
-没有分类规范、没有决策表格式、没有条数上限、没有追加检查清单。
+No categorization rules, no decision table format, no size limits, no append checklist.
 
 ## agentskills.io
 
-最佳实践文档有 "Gotchas sections" 的概念：
+The [best practices guide](https://agentskills.io/skill-creation/best-practices) introduces "Gotchas sections":
+
 > "The highest-value content in many skills is a list of gotchas — environment-specific facts that defy reasonable assumptions."
 
-但格式就是平铺 bullet list，没有分类、决策表、条数上限。
+Format: flat bullet lists. No categorization, no decision tables, no size limits.
 
-## Claude Code 社区
+## Claude Code Community
 
-Jenny Ouyang "Stop Adding New Claude Skills — Fix the Broken Ones First" (Substack, 2026-04-02)
+Jenny Ouyang's ["Stop Adding New Claude Skills — Fix the Broken Ones First"](https://buildtolaunch.substack.com/p/claude-skills-not-working-fix) (Substack, April 2026) is the most systematic skill quality article in the community. Her SSOT Audit focuses exclusively on **file-system-level** issues:
 
-SSOT Audit 关注的全是文件系统层面：
-- Broken Reference（路径断了）
-- Orphan File（没人调用的 skill）
-- Singleton（平铺 .md 没有文件夹包裹）
-- Duplicate Doctrine（两个文件说同一件事）
-- Dead Alias（遗留命令没删）
+- **Broken Reference**: path points to a moved/deleted file
+- **Orphan File**: skill with zero incoming references
+- **Singleton**: flat `.md` instead of proper folder with SKILL.md
+- **Duplicate Doctrine**: two files both defining how to do the same job
+- **Dead Alias**: legacy command never deleted
 
-skill 内部内容质量（包括 Pitfalls 怎么写）完全没覆盖。
+**Skill content organization is a blind spot.** The entire audit operates at the file system layer — whether paths resolve, whether files are orphaned. What goes *inside* the skill, how pitfalls are structured, whether an agent can efficiently match symptoms to fixes — none of this is addressed.
 
-## Tao An "How to Write AI Skills That Don't Fail in Production" (Medium, 2025-12-16)
+## Tao An — "How to Write AI Skills That Don't Fail in Production"
 
-聚焦系统级可靠性（级联失败、结构化输出、权限边界）。不涉及知识文档治理。
+[Medium article](https://tao-hpu.medium.com/how-to-write-ai-skills-that-dont-fail-in-production-6bb679897f30) (December 2025). Covers system-level reliability: cascading failures, structured output, permission boundaries, the autonomy spectrum. 26 academic/official references. Does not address knowledge document governance or pitfall organization.
 
-## 结论
+## Anthropic — "Effective Context Engineering for AI Agents"
 
-没有任何人提出过"pitfall 分类规范 + 决策表 + 追加检查清单"这一套。skill 内部内容组织是社区盲区。
+[Engineering blog](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) (2025). Discusses context window management, the "lost-in-the-middle" effect, and structured instructions vs prose. Relevant findings (numbered steps outperform prose, RFC 2119 keywords improve compliance) support the decision table approach, but do not explicitly address pitfall documentation structure.
+
+## Gap Analysis
+
+| Player | What They Cover | What's Missing |
+|--------|----------------|----------------|
+| Hermes official | `## Pitfalls` section header | No format spec, categorization, or size limits |
+| agentskills.io | "Gotchas" as flat bullet lists | No decision tables or structural guidance |
+| Claude Code community | File-system skill auditing | **Content organization is unexplored** |
+| Production guides | System reliability patterns | Knowledge document governance |
+
+**No existing framework addresses pitfall content organization within agent skills.** This is the gap this project fills.
