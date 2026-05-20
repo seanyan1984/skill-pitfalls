@@ -1,85 +1,67 @@
+[English](#skill-pitfalls) | [简体中文](references/README_CN.md)
+
 # Skill Pitfalls
 
-**Structured pitfall management for AI agent skills — categorization, decision tables, and A/B experiment validation.**
+**Structured pitfall management for AI agent skills — categorization, decision tables, and validation.**
 
-## Why This Exists
+When you build AI agent skills, you accumulate known failure modes. Most people dump these into a flat bullet list. Over time you get 30+ items with no structure — agents can't match symptoms to fixes. This project provides a specification and experimental validation for organizing pitfalls into actionable decision tables.
 
-When you build AI agent skills (Hermes, Claude Code, etc.), you accumulate "gotchas" — known failure modes and how to handle them. Most people dump these into a flat bulleted list. Over time you get 30+ items with no structure, no searchability, and no diagnostic value.
+## Results
 
-This repo proposes a **structured approach**: categorize pitfalls, use decision tables for diagnostics, and validate the improvement with A/B experiments.
+A/B experiments comparing flat lists vs. structured pitfalls (3 scenarios, multiple runs):
 
-## Key Results
-
-We ran A/B experiments comparing flat lists vs. structured pitfalls across 3 real error scenarios:
-
-| Metric | Flat List (Old) | Structured (New) | Change |
-|--------|-----------------|-------------------|--------|
-| Diagnosis Accuracy (0-2) | 2.0 | 2.0 | = |
-| Fix Accuracy (0-2) | 1.67 | 2.0 | **+20%** |
-| Reasoning Steps | 3.6 | 2.7 | **-25%** |
+| Metric | Flat List | Structured | Change |
+|--------|-----------|------------|--------|
 | Overall Score | 2.67 | 3.67 | **+37%** |
+| Fix Accuracy | 1.67 | 2.0 | **+20%** |
+| Reasoning Steps | 3.6 | 2.7 | **-25%** |
 
-**Key insight**: The biggest improvement comes when pitfalls are **scattered across multiple sections** (Scenario B: +2.0 points). Decision tables eliminate ambiguity — agents match symptoms to fixes in ~2 steps instead of linearly scanning N items.
+Biggest improvement when pitfalls were scattered across multiple sections (+2.0 points).
 
-## The Specification
+## Contents
 
-See [`skill/SKILL.md`](skill/SKILL.md) for the full pitfall organization spec. Key rules:
+| Section | Description |
+|---------|-------------|
+| [`skill/SKILL.md`](skill/SKILL.md) | The full specification — categorization rules, decision table format, writing guidelines, checklist |
+| [`experiment/`](experiment/) | A/B test data: prompts, old vs. new pitfalls, results, token analysis |
+| [`references/community-landscape.md`](references/community-landscape.md) | Why this matters — community gap analysis |
 
-1. **>5 items must be categorized** (anomaly diagnosis / DOM / anti-scraping / data / output / red-lines)
-2. **Anomaly diagnostics must use decision tables** (symptom → diagnosis → fix)
-3. **No duplication with body text** — pitfalls only cover blind spots
-4. **Quality audit after refactoring** — 7-dimension checklist
-5. **A/B validation optional but recommended** — see experiment protocol
+## The Spec in 5 Rules
 
-## The Experiment
+1. **>5 items → categorize.** Use: anomaly diagnosis (highest priority), selector/DOM traps, anti-scraping, data & params, output & rendering, project conventions.
 
-[`experiment/`](experiment/) contains the full A/B test:
+2. **Anomaly diagnosis → decision table.** Three columns: `Symptom | Diagnosis | Fix`. No prose.
 
-- 3 scenarios (delegate timeout, CDP target loss, DB duplicate rows)
-- 2 versions (flat list vs. categorized + decision tables)
-- Multiple runs per version for statistical reliability
-- Token efficiency analysis
+3. **Don't duplicate the body.** If the skill body already covers a gotcha (⚠️ marker), the PITFALL gives a one-line cross-reference only.
 
-## Community Landscape
+4. **Pre-append checklist.** Every new item: categorize → pick category → decision table if diagnostic → merge if duplicate → split if too many.
 
-This is a **gap** in the current AI agent ecosystem:
+5. **Quality audit.** 7-dimension checklist after refactoring. Pass / minor fix / rework.
 
-| Player | What They Cover | What's Missing |
-|--------|----------------|----------------|
-| Hermes official docs | `## Pitfalls` section header | No format spec, no categorization rules |
-| [agentskills.io](https://agentskills.io/skill-creation/best-practices) | "Gotchas sections" as flat bullet lists | No decision tables, no size limits |
-| [Claude Code community](https://buildtolaunch.substack.com/p/claude-skills-not-working-fix) | File-system-level skill auditing (broken refs, orphans, duplicates) | **Skill content organization is a blind spot** |
-| [Production AI Skills guide](https://tao-hpu.medium.com/how-to-write-ai-skills-that-dont-fail-in-production-6bb679897f30) | System reliability (circuit breakers, structured output) | Knowledge document governance |
+## Quick Start
 
-See [`references/community-landscape.md`](references/community-landscape.md) for detailed analysis.
-
-中文说明：[`references/README_CN.md`](references/README_CN.md)
-
-## Usage
-
-### For Hermes Agent
-
-Copy `skill/` to your Hermes skills directory:
-
+**Hermes Agent:**
 ```bash
 cp -r skill/ ~/.hermes/skills/software-development/pitfall-organization/
 ```
 
-### For Claude Code
+**Claude Code / Others:** The rules in `skill/SKILL.md` are framework-agnostic. Apply them to any markdown-based skill or prompt documentation.
 
-Adapt the rules in `skill/SKILL.md` into your `.claude/skills/` or `CLAUDE.md` as a style guide for writing pitfalls.
+## Community Context
 
-### For Any Agent Framework
+Current skill quality efforts focus on **file-system hygiene** (broken references, orphan files). **Content organization within skills** remains unexplored.
 
-The categorization rules and decision table format are framework-agnostic. Apply them to any markdown-based skill/prompt documentation.
+| Player | Covers | Missing |
+|--------|--------|---------|
+| Hermes official | `## Pitfalls` section header | No format spec |
+| agentskills.io | Flat "gotchas" bullet lists | No decision tables |
+| Claude Code community | File-system skill auditing | Content structure is a blind spot |
+
+See [`references/community-landscape.md`](references/community-landscape.md) for full analysis.
 
 ## Contributing
 
-Issues and PRs welcome! Particularly interested in:
-
-- Pitfall patterns from other agent frameworks (LangChain, CrewAI, AutoGen)
-- Additional A/B test scenarios
-- Translations of the spec
+Issues and PRs welcome — especially pitfall patterns from other agent frameworks and additional test scenarios.
 
 ## License
 
