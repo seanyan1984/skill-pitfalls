@@ -96,21 +96,9 @@ After refactoring, validate with this checklist:
 
 **Rating**: ✅ Pass / ⚠️ Minor fix needed / ❌ Major rework
 
-### 8. A/B Validation (Optional)
+### 8. Validation (Recommended)
 
-After refactoring + quality audit, run an A/B experiment to quantify the improvement:
-
-1. Take 2-3 typical error scenarios from pre-refactor and post-refactor PITFALLs
-2. Construct isolated contexts: one group gets only old PITFALL, another gets only new
-3. Give identical error description prompts to each group
-4. Score on: diagnosis accuracy (0-2), fix accuracy (0-2), wrong suggestions (N), reasoning steps (N)
-
-**Scoring**: `Overall = Diagnosis + Fix - WrongSuggestions - (Steps > 3 ? 1 : 0)`
-
-**Our results** (3 scenarios × 2 versions):
-- Overall score: 2.67 → 3.67 (+37%)
-- Fix accuracy: 1.67 → 2.0 (+20%)
-- Biggest improvement when pitfalls were scattered across multiple sections (+2.0 points)
+After refactoring, run test scenarios to verify agents can correctly diagnose errors using the new PITFALL structure. Compare against pre-refactor behavior if possible.
 
 ## When to Use This Spec
 
